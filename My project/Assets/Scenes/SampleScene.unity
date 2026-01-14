@@ -228,7 +228,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 242.2
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -861,7 +861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2035279284283069573}
   m_Layer: 0
-  m_Name: HTI_game_project_assets (1)
+  m_Name: HTI_game_project_assets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
