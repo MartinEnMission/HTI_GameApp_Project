@@ -551,6 +551,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  groundDrag: 10
+  playerHeight: 1.940463
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
   orientation: {fileID: 1327476666}
 --- !u!1 &1764452541
 GameObject:
@@ -1872,7 +1877,7 @@ GameObject:
   - component: {fileID: 1039773854093624447}
   - component: {fileID: 3785580567199291087}
   - component: {fileID: 3928006227162422895}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Level base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
