@@ -51,14 +51,23 @@ public class PlayerMov : MonoBehaviour
 
         Vector3 groundCheckOrigin = transform.position + Vector3.down * (col.height * 0.5f - col.radius + 0.05f);
 
-            grounded = Physics.SphereCast(
-                groundCheckOrigin,
-                col.radius * 0.95f,
-                Vector3.down,
-                out RaycastHit hit,
-                0.3f,
-                whatIsGround
-            );
+            // grounded = Physics.SphereCast(
+            //     groundCheckOrigin,
+            //     col.radius * 0.95f,
+            //     Vector3.down,
+            //     out RaycastHit hit,
+            //     0.3f,
+            //     whatIsGround
+            // );
+
+            // TODO :   - gérer les collisions avec des colliders plutôt qu'avec des raycasts/spherecasts,
+            //          - Remplir de PM,
+            //          - Ajuster la rigole du level 4,
+            //          - Mettre une vitesse constante d'avancée,
+            //          - Unlock la direction d'avancée de la caméra.
+        
+
+            grounded = true;
 
         Debug.DrawRay(
             groundCheckOrigin,
@@ -129,6 +138,9 @@ public class PlayerMov : MonoBehaviour
 
     void Jump()
     {
+
+        Debug.Log("Jump!");
+
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
