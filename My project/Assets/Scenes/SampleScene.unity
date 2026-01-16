@@ -487,6 +487,7 @@ GameObject:
   - component: {fileID: 1685190236}
   - component: {fileID: 1685190237}
   - component: {fileID: 1685190238}
+  - component: {fileID: 1685190239}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -559,8 +560,33 @@ MonoBehaviour:
   playerHeight: 1.940463
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
+  groundCheckRadius: 0.3
+  groundCheckDistance: 0.2
   orientation: {fileID: 1327476666}
+--- !u!136 &1685190239
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685190235}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1764452541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,7 +1948,7 @@ GameObject:
   - component: {fileID: 1039773854093624447}
   - component: {fileID: 3785580567199291087}
   - component: {fileID: 3928006227162422895}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Level base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3283,6 +3309,7 @@ GameObject:
   - component: {fileID: 5804326582503421447}
   - component: {fileID: 1548846964497707028}
   - component: {fileID: 1604539012051101820}
+  - component: {fileID: 7857463044615974368}
   m_Layer: 0
   m_Name: Separator
   m_TagString: Untagged
@@ -3290,6 +3317,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!64 &7857463044615974368
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7857463044615974367}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2033020081441075163, guid: b856f7dfcc430154c947c5ee6db9b93a, type: 3}
 --- !u!23 &7863656145252570275
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3694,7 +3743,6 @@ GameObject:
   - component: {fileID: 7955153267266113268}
   - component: {fileID: 4939073870488883525}
   - component: {fileID: 391363769993664063}
-  - component: {fileID: 8312119187385078469}
   m_Layer: 0
   m_Name: Player's mesh
   m_TagString: Untagged
@@ -3702,29 +3750,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &8312119187385078469
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8312119187385078468}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.680038
-  m_Height: 1.9404626
-  m_Direction: 1
-  m_Center: {x: 0.000030434581, y: 0.104856424, z: 2.680038}
 --- !u!4 &8441799068103248014
 Transform:
   m_ObjectHideFlags: 0

@@ -19,9 +19,14 @@ public class PlayerMov : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
+
     public float playerHeight;
     public LayerMask whatIsGround;
+    [SerializeField] float groundCheckRadius = 0.3f;
+    [SerializeField] float groundCheckDistance = 0.2f;
     bool grounded;
+
+    CapsuleCollider col;
 
     public Transform orientation;
 
@@ -35,25 +40,36 @@ public class PlayerMov : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<CapsuleCollider>();
         rb.freezeRotation = true;
 
         readyToJump = true;
     }
     void Update()
-    {
-        grounded = Physics.SphereCast(
-        transform.position,
-        0.3f,
-        Vector3.down,
-        out RaycastHit hit,
-        playerHeight * 0.5f + 0.2f,
-        whatIsGround
+    {   
+        Vector3 capsuleCenterWorld = transform.TransformPoint(col.center);
+
+        Vector3 groundCheckOrigin = transform.position + Vector3.down * (col.height * 0.5f - col.radius + 0.05f);
+
+            grounded = Physics.SphereCast(
+                groundCheckOrigin,
+                col.radius * 0.95f,
+                Vector3.down,
+                out RaycastHit hit,
+                0.3f,
+                whatIsGround
+            );
+
+        Debug.DrawRay(
+            groundCheckOrigin,
+            Vector3.down * 0.1f,
+            grounded ? Color.green : Color.red
         );
 
         MyInput();
 
         SpeedControl();
-        
+
         if(grounded)
         {
             rb.drag = groundDrag;
@@ -62,6 +78,12 @@ public class PlayerMov : MonoBehaviour
         {
             rb.drag = 0;
         }
+
+        if (grounded && !readyToJump)
+        {
+            readyToJump = true;
+        }
+
     }
 
     void FixedUpdate()
@@ -79,7 +101,6 @@ public class PlayerMov : MonoBehaviour
 
             Jump();
 
-            Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
 
