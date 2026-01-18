@@ -7,12 +7,17 @@ using UnityEngine;
 public class PlayerMov : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    public float groundDrag;
-    public float airMultiplier;
+    public float moveSpeed = 6f;
+    public float minForwardSpeed = 2f;
+    public float groundDrag = 5f;
+    public float airMultiplier = 0.4f;
+
+    [Header("Slow Down")]
+    public float slowMultiplier = 0.4f;
+    public KeyCode slowKey = KeyCode.LeftControl;
 
     [Header("Jump")]
-    public float jumpForce;
+    public float jumpForce = 7f;
     public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
@@ -21,7 +26,7 @@ public class PlayerMov : MonoBehaviour
     public Transform orientation;
 
     float horizontalInput;
-    float verticalInput;
+    float currentForwardSpeed;
 
     Vector3 moveDirection;
 
@@ -36,6 +41,7 @@ public class PlayerMov : MonoBehaviour
         col = GetComponent<CapsuleCollider>();
 
         rb.freezeRotation = true;
+        currentForwardSpeed = moveSpeed;
     }
 
     void Update()
@@ -43,14 +49,10 @@ public class PlayerMov : MonoBehaviour
         MyInput();
         SpeedControl();
 
-        // Drag
         rb.drag = grounded ? groundDrag : 0f;
 
-        // Reset jump quand on touche le sol
         if (grounded && !readyToJump)
-        {
             readyToJump = true;
-        }
     }
 
     void FixedUpdate()
@@ -61,7 +63,12 @@ public class PlayerMov : MonoBehaviour
     void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+
+        // Gestion du ralentissement
+        if (Input.GetKey(slowKey))
+            currentForwardSpeed = Mathf.Max(minForwardSpeed, moveSpeed * slowMultiplier);
+        else
+            currentForwardSpeed = moveSpeed;
 
         if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
@@ -72,13 +79,16 @@ public class PlayerMov : MonoBehaviour
 
     void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Vector3 forwardMove = orientation.forward * currentForwardSpeed;
+        Vector3 strafeMove = orientation.right * horizontalInput * currentForwardSpeed;
 
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        moveDirection = (forwardMove + strafeMove).normalized;
+
+        rb.AddForce(moveDirection * currentForwardSpeed * 10f, ForceMode.Force);
 
         if (!grounded)
         {
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection * currentForwardSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
 
@@ -86,9 +96,11 @@ public class PlayerMov : MonoBehaviour
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        if (flatVel.magnitude > moveSpeed)
+        float maxSpeed = currentForwardSpeed;
+
+        if (flatVel.magnitude > maxSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            Vector3 limitedVel = flatVel.normalized * maxSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
@@ -99,6 +111,9 @@ public class PlayerMov : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
+    // =====================
+    // GROUND CHECK (COLLIDERS)
+    // =====================
 
     private void OnCollisionStay(Collision collision)
     {
@@ -106,7 +121,6 @@ public class PlayerMov : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            // Vérifie que le contact vient bien du dessous
             if (Vector3.Dot(contact.normal, Vector3.up) > 0.5f)
             {
                 grounded = true;
